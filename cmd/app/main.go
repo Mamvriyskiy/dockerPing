@@ -9,7 +9,7 @@ import (
 	"github.com/Mamvriyskiy/dockerPing/internal/repository"
 	"github.com/Mamvriyskiy/dockerPing/internal/services"
 	"github.com/Mamvriyskiy/dockerPing/internal/handler"
-	"github.com/Mamvriyskiy/dockerPing/internal/app"
+	app "github.com/Mamvriyskiy/dockerPing/internal/app"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 
 	logger.Log("Info", "", "InitConfig", nil)
 
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("configs/.env"); err != nil {
 		logger.Log("Error", "Load", "Load env file:", err, "")
 		return
 	}
