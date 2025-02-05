@@ -30,3 +30,8 @@ func (c *ClientPostgres) AddClient(client models.ClientService) (models.ClientDa
 
 	return clientData, nil
 }
+
+func (c *ClientPostgres) GetClient(client models.ClientService) (models.ClientData, error) {
+	return models.ClientData{}, nil
+}
+

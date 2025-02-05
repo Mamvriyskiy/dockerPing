@@ -7,6 +7,7 @@ import (
 
 type IClientService interface {
 	AddClient(client models.ClientHandler) (models.ClientData, error)
+	GenerateToken(client models.ClientHandler) (models.ClientData, string, error)
 }
 
 type IContainerService interface {

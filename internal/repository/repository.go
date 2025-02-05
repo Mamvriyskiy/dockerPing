@@ -7,10 +7,11 @@ import (
 
 type ClientPostgresReposipory interface {
 	AddClient(client models.ClientService) (models.ClientData, error) 
+	GetClient(client models.ClientService) (models.ClientData, error) 
 }
 
 type ContainerPostgresReposipory interface {
-	AddContainer(container models.ContainerService) (models.ContainerData, error) 
+	AddContainer(container models.ContainerService) (models.ContainerData, error)
 }
 
 type Repository struct {
