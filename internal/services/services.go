@@ -6,16 +6,21 @@ import (
 )
 
 type IClientService interface {
-	AddClient(models.ClientHandler) (models.ClientData, error)
+	AddClient(client models.ClientHandler) (models.ClientData, error)
 }
 
+type IContainerService interface {
+	AddContainer(container models.ContainerHandler) (models.ContainerData, error)
+}
 
 type Services struct {
 	IClientService
+	IContainerService
 }
 
 func NewServicesPsql(repo *repository.Repository) *Services {
 	return &Services{
 		IClientService: NewClientService(repo.ClientPostgresReposipory),
+		IContainerService: NewContainerService(repo.ContainerPostgresReposipory),
 	}
 }

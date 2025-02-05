@@ -16,8 +16,10 @@ func NewHandler(services *services.Services) *Handler {
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
 
-	ping := router.Group("/ping")
-	ping.POST("/", h.addPing)
+	api := router.Group("/")
+	api.POST("", h.addClient)
+	api.POST("/ping", h.addContainer)
+
 
 	return router
 }

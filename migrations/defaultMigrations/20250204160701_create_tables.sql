@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS clientcontainer (
 
 CREATE TABLE IF NOT EXISTS container (
     containerID UUID,
-    ipcontainer INET,
-    namecontainer varchar(255)
+    ipcontainer INET
 );
 
 CREATE TABLE IF NOT EXISTS historycontainer (

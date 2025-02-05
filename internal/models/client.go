@@ -3,7 +3,7 @@ package models
 type Client struct {
 	ClientID string `db:"clientid"`
 	Login    string `db:"login" json:"login`
-	// Email string `db:"email" json:"email`
+	Email string `db:"email" json:"email`
 }
 
 type ClientHandler struct {

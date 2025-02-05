@@ -6,20 +6,26 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/Mamvriyskiy/dockerPing/logger"
 	"github.com/Mamvriyskiy/dockerPing/internal/models"
-	"github.com/Mamvriyskiy/dockerPing/internal/services"
+	//"github.com/Mamvriyskiy/dockerPing/internal/services"
 )
 
-func (h *Handler) addPing(c *gin.Context) {
+func (h *Handler) addClient(c *gin.Context) {
 	var client models.ClientHandler
 
 	if err := c.BindJSON(&client); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
+		return
 	}
 
-	_ = services.AddClient(client)
+	clientData, err := h.services.AddClient(client)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка создания клиента",
+		})
+		return
+	}
 	
 	// fmt.Println("+")
-	// c.JSON(http.OK, map[string]interface{}{})
+	c.JSON(http.StatusOK, clientData)
 }
-
