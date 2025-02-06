@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Mamvriyskiy/dockerPing/logger"
-	"github.com/Mamvriyskiy/dockerPing/internal/models"
-	//"github.com/Mamvriyskiy/dockerPing/internal/services"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
+	//"github.com/Mamvriyskiy/dockerPing/backend/internal/services"
 )
 
 func (h *Handler) addClient(c *gin.Context) {

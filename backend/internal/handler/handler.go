@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/Mamvriyskiy/dockerPing/logger"
-	"github.com/Mamvriyskiy/dockerPing/internal/services"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/services"
 )
 
 type Handler struct {

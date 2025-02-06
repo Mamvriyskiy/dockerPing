@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/Mamvriyskiy/dockerPing/internal/models"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
 )
 
 type ClientPostgresReposipory interface {

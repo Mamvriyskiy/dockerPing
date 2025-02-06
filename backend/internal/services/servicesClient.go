@@ -3,8 +3,8 @@ package services
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"github.com/Mamvriyskiy/dockerPing/internal/models"
-	"github.com/Mamvriyskiy/dockerPing/internal/repository"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/repository"
 	"github.com/Mamvriyskiy/dockerPing/logger"
 	jwt "github.com/dgrijalva/jwt-go"
 	"time"

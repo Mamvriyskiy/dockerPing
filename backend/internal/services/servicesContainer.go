@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/Mamvriyskiy/dockerPing/internal/models"
-	"github.com/Mamvriyskiy/dockerPing/internal/repository"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/repository"
 )
 
 type ContainerService struct {

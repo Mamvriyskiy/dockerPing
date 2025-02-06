@@ -6,10 +6,10 @@ import (
 	"github.com/spf13/viper"
 	"github.com/joho/godotenv"
 	"github.com/Mamvriyskiy/dockerPing/logger"
-	"github.com/Mamvriyskiy/dockerPing/internal/repository"
-	"github.com/Mamvriyskiy/dockerPing/internal/services"
-	"github.com/Mamvriyskiy/dockerPing/internal/handler"
-	app "github.com/Mamvriyskiy/dockerPing/internal/app"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/repository"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/services"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/handler"
+	app "github.com/Mamvriyskiy/dockerPing/backend/internal/app"
 )
 
 func main() {
