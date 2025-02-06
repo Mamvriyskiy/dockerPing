@@ -13,10 +13,14 @@ func NewContainerService(repo repository.ContainerPostgresReposipory) *Container
 	return &ContainerService{repo: repo}
 }
 
-func (s *ContainerService) AddContainer(container models.ContainerHandler) (models.ContainerData, error) {
+func (s *ContainerService) AddContainer(container models.ContainerHandler, clientID string) (models.ContainerData, error) {
 	containerService := models.ContainerService{
 		Container: container.Container,
 	}
 
-	return s.repo.AddContainer(containerService)
+	return s.repo.AddContainer(containerService, clientID)
+}
+
+func (s *ContainerService) GetContainers() ([]models.ContainerData, error) {
+	return s.repo.GetContainers()
 }

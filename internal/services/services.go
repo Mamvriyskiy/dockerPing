@@ -11,7 +11,8 @@ type IClientService interface {
 }
 
 type IContainerService interface {
-	AddContainer(container models.ContainerHandler) (models.ContainerData, error)
+	AddContainer(container models.ContainerHandler, clientID string) (models.ContainerData, error)
+	GetContainers() ([]models.ContainerData, error)
 }
 
 type Services struct {

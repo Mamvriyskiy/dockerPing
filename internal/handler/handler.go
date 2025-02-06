@@ -18,7 +18,10 @@ func NewHandler(services *services.Services) *Handler {
 	return &Handler{services: services}
 }
 
-const signingKey = "jaskljfkdfndnznmckmdkaf3124kfdlsf"
+const (
+	signingKey = "jaskljfkdfndnznmckmdkaf3124kfdlsf"
+	pingerToken = "hsHcmJkmHaJIUzUxMiIsInR5cC3jhmdHJ7H.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIEdvbGQiLCJhZG1pbiI6dHJ1ZX0K.LIHjWCBORSWMEibq-tnT8ue_deUqZx1K0XxCOXZRrBI"
+)
 
 // Middleware для извлечения данных из JWT и добавления их в контекст запроса.
 func AuthMiddleware() gin.HandlerFunc {
@@ -32,7 +35,8 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// Получить токен из заголовка запроса или из куки
 		tokenString := c.GetHeader("Authorization")
-		fmt.Println("Token:", tokenString)
+		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+		// fmt.Println("Token:", tokenString)
 		var err error
 		if tokenString == "" {
 			// Если токен не найден в заголовке, попробуйте из куки
@@ -49,30 +53,33 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Парсинг токена
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			// Здесь нужно вернуть ключ для проверки подписи токена.
-			// В реальном приложении, возможно, это будет случайный секретный ключ.
-			return []byte(signingKey), nil
-		})
-		
-		// fmt.Println(err) 
-		// Проверить наличие ошибок при парсинге токена
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized", "detail:": err.Error()})
-			c.Abort()
-			return
-		}
-
-		// Добавить данные из токена в контекст запроса
-		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			fmt.Println("+")
-			c.Set("userId", claims["userID"])
+		if tokenString == pingerToken {
 			c.Next()
 		} else {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			c.Abort()
-			return
+			// Парсинг токена
+			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+				// Здесь нужно вернуть ключ для проверки подписи токена.
+				// В реальном приложении, возможно, это будет случайный секретный ключ.
+				return []byte(signingKey), nil
+			})
+			
+			// Проверить наличие ошибок при парсинге токена
+			if err != nil {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized", "detail:": err.Error()})
+				c.Abort()
+				return
+			}
+				
+			// Добавить данные из токена в контекст запроса
+			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+				// fmt.Println(claims)
+				c.Set("clientID", claims["clientID"])
+				c.Next()
+			} else {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+				c.Abort()
+				return
+			}
 		}
 	}
 }
@@ -80,15 +87,21 @@ func AuthMiddleware() gin.HandlerFunc {
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
 
+	router.Use(func(ctx *gin.Context) {
+        fmt.Println("Requested URL:", ctx.Request.URL.String()) // Логируем URL запроса
+		fmt.Println("Request Method:", ctx.Request.Method) 
+        ctx.Next() // Продолжаем обработку запроса
+    })
+
 	router.Use(AuthMiddleware())
 
 	auth := router.Group("/auth")
 	auth.POST("/sign-up", h.addClient)
 	auth.POST("/sign-in", h.signIn)
 
-	api := router.Group("/ping")
-	api.POST("/", h.addContainer)
-
+	api := router.Group("/api")
+	api.POST("/ping", h.addContainer)
+	api.GET("/ping", h.getContainers)
 
 	return router
 }

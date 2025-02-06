@@ -31,7 +31,18 @@ func (c *ClientPostgres) AddClient(client models.ClientService) (models.ClientDa
 	return clientData, nil
 }
 
-func (c *ClientPostgres) GetClient(client models.ClientService) (models.ClientData, error) {
-	return models.ClientData{}, nil
+func (c *ClientPostgres) GetClient(email string) (models.ClientData, error) {
+	var clientData models.ClientData
+
+	queries := fmt.Sprintf(`select clientID, login from client where email = $1`)
+	err := c.db.Get(&clientData, queries, email)
+	if err != nil {
+		logger.Log("Error", "Get", "Error select client table:", err)
+		return models.ClientData{}, err
+	}
+
+	clientData.Email = email
+
+	return clientData, nil
 }
 

@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS client (
 );
 
 CREATE TABLE IF NOT EXISTS clientcontainer (
-    ID UUID,
     clientID UUID,
     containerID UUID
 );
