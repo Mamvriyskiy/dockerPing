@@ -1,12 +1,17 @@
 package request
 
 import (
-	"time"
+	"encoding/json"
 	"net/http"
 	"io/ioutil"
+	"github.com/Mamvriyskiy/dockerPing/pinger/models"
 )
 
-func requestContainers() {
+const (
+	pingerToken = "hsHcmJkmHaJIUzUxMiIsInR5cC3jhmdHJ7H.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIEdvbGQiLCJhZG1pbiI6dHJ1ZX0K.LIHjWCBORSWMEibq-tnT8ue_deUqZx1K0XxCOXZRrBI"
+)
+
+func RequestContainers() ([]models.Container, error) {
 	requestURL := "http://localhost:8000/api/ping"
 	req, err := http.NewRequest("GET", requestURL, nil)
 	if err != nil {
@@ -20,15 +25,23 @@ func requestContainers() {
 	resp, err := client.Do(req)
 	if err != nil {
 		// fmt.Println("Error making request:", err)
-		return
+		return nil, err
 	}
 	defer resp.Body.Close()
+	
+	body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return nil, err
+    }
+
+	var containers []models.Container
+    err = json.Unmarshal(body, &containers)
+    if err != nil {
+        return nil, err
+    }
 
 	// fmt.Println(resp.Body, resp.StatusCode)
-	time.Sleep(10 * time.Second)
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	return containers, nil
 
-	pingContainers(body)
-	// fmt.Println("Response:", string(body))
 }

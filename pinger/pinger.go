@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"time"
+	"net/http"
 	// "github.com/Mamvriyskiy/dockerPing/logger"
-)
-
-const (
-	pingerToken = "hsHcmJkmHaJIUzUxMiIsInR5cC3jhmdHJ7H.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIEdvbGQiLCJhZG1pbiI6dHJ1ZX0K.LIHjWCBORSWMEibq-tnT8ue_deUqZx1K0XxCOXZRrBI"
+	"github.com/Mamvriyskiy/dockerPing/pinger/request"
+	"github.com/Mamvriyskiy/dockerPing/pinger/ping"
 )
 
 func main() {
@@ -14,8 +14,17 @@ func main() {
 
 	httpServer := RunPinger("8081")
 
+	//добавить время засыпания из конфига, количество воркеров
 	for {
-		
+		ipContainers, err := request.RequestContainers()
+		if err != nil {
+			// error log
+			continue
+		}
+
+		ping.PingContainers(ipContainers)
+
+		time.Sleep(20 * time.Second)
 	}
 
 	httpServer.ListenAndServe()
