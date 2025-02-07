@@ -14,14 +14,15 @@ var (
 
 func InitLogger() {
 	once.Do(func() {
-		file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-		if err != nil {
-			panic(err) 
-		}
+		// file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+		// if err != nil {
+		// 	panic(err) 
+		// }
 
 		core := zapcore.NewCore(
 			zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
-			zapcore.AddSync(file),                                    
+			// zapcore.AddSync(file),          
+			zapcore.AddSync(os.Stdout),                  
 			zap.InfoLevel,                                            
 		)
 

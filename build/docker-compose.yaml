@@ -19,9 +19,29 @@ services:
       POSTGRES_USER: "Misfio32"
       POSTGRES_PASSWORD: "Smena"
       POSTGRES_DB: "postgres"
-    # networks:
-    #   - pgnetwork
+    networks:
+      - mynetwork
 
-# networks:
-#   pgnetwork:
-#     driver: bridge
+  backend:
+    build:
+      context: ..
+      dockerfile: ./build/Dockerfile.backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pinger
+    networks:
+      - mynetwork
+
+  pinger:
+    build:
+      context: ..
+      dockerfile: ./build/Dockerfile.pinger
+    ports:
+      - "9090:9090"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
