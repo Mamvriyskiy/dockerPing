@@ -14,15 +14,14 @@ var (
 
 func InitLogger() {
 	once.Do(func() {
-		// Создаем кастомный конфиг для цветного консольного вывода
 		encoderConfig := zap.NewProductionEncoderConfig()
-		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder  // Цветной вывод уровня
-		encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder // Краткие пути к файлам
+		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+		// encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
 
 		core := zapcore.NewCore(
-			zapcore.NewConsoleEncoder(encoderConfig), // Используем консольный вывод
+			zapcore.NewConsoleEncoder(encoderConfig),
 			zapcore.AddSync(os.Stdout),
-			zap.InfoLevel, // Уровень логирования
+			zap.InfoLevel,
 		)
 
 		Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))

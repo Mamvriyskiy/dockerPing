@@ -25,3 +25,8 @@ func (s *HistoryService) AddContainersStatus(containers []models.HistoryHandler)
 
 	return s.repo.AddContainersStatus(containersServ)
 }
+
+
+func (s *HistoryService) GetContainersStatus(clientID string) ([]models.HistoryData, error) {
+	return s.repo.GetContainersStatus(clientID)
+}

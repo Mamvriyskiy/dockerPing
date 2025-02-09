@@ -7,9 +7,9 @@ type ClientHandler struct {
 }
 
 type ClientService struct {
-	Login    string `db:"login"`
-	Email    string `db:"email`
-	Password string `db:"password"`
+	Login    string
+	Email    string
+	Password string
 }
 
 type ClientData struct {

@@ -1,0 +1,85 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+}
+
+.tableBox {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+  
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+  
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+  
+.table th {
+    background: #4facfe;
+    color: white;
+}
+  
+.statusUp {
+    color: green;
+    font-weight: bold;
+}
+  
+.statusDown {
+    color: red;
+    font-weight: bold;
+}
+  
+@media (max-width: 600px) {
+    .tableBox {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .table th, .table td {
+      padding: 8px;
+    }
+}
+  
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+  }
+  
+  .form div {
+    margin-bottom: 10px;
+  }
+  
+  .form input {
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .form button {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }

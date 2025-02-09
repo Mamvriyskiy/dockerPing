@@ -11,13 +11,14 @@ type HistoryHandler struct {
 }
 
 type HistoryService struct {
-	ContainerID string    `db:"containerid"`
-	Status      string    `db:"status"`
-	TimePing    time.Time `db:"timeping"`
+	ContainerID string
+	Status      string
+	TimePing    time.Time
 }
 
 type HistoryData struct {
-	ContainerID string    `db:"containerid" json:"containerid"`
-	Status      string    `db:"status" json:"status"`
-	TimePing    time.Time `db:"timeping" json:"timeping"`
+	ContainerIP string `db:"ipcontainer" json:"ipcontainer"`
+	ContainerID string `db:"containerid" json:"containerid"`
+	Status      string `db:"statusping" json:"status"`
+	TimePing    string `db:"timeping" json:"timeping"`
 }

@@ -20,6 +20,7 @@ func main() {
 		ipContainers, err := request.RequestContainers()
 		if err != nil {
 			logger.Log("Error", "Error occurred while requesting containers", err)
+			time.Sleep(10 * time.Second)
 			continue
 		}
 

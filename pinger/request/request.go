@@ -15,8 +15,8 @@ const (
 )
 
 func RequestContainers() ([]models.Container, error) {
-	// requestURL := "http://backend:8000/api/ping"
-	requestURL := "http://localhost:8000/api/ping"
+	requestURL := "http://backend:8000/api/ping"
+	// requestURL := "http://localhost:8000/api/ping"
 	req, err := http.NewRequest("GET", requestURL, nil)
 	if err != nil {
 		logger.Log("Error", "Error creating HTTP request", err, fmt.Sprintf("requestURL = %s", requestURL))
@@ -24,7 +24,7 @@ func RequestContainers() ([]models.Container, error) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+pingerToken)
+	req.Header.Set("Authorization", "Bearer " + pingerToken)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -35,6 +35,12 @@ func RequestContainers() ([]models.Container, error) {
 	defer resp.Body.Close()
 
 	logger.Log("Info", fmt.Sprintf("Received response with status: %d", resp.StatusCode), nil)
+	if resp.StatusCode != http.StatusOK {
+		errMsg := fmt.Sprintf("unexpected response status: %d", resp.StatusCode)
+		logger.Log("Error", "Unexpected response status", nil)
+    	err = fmt.Errorf(errMsg)
+		return nil, err
+	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -56,7 +62,7 @@ func RequestContainers() ([]models.Container, error) {
 func SendStatusContainers(ipContainers []models.Container) error {
 	logger.Log("Info", "Starting to send container status", nil)
 
-	requestURL := "http://localhost:8000/api/pinger"
+	requestURL := "http://backend:8000/api/pinger"
 
 	jsonData, err := json.Marshal(ipContainers)
 	if err != nil {

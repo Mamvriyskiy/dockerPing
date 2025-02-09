@@ -5,10 +5,10 @@ type ContainerHandler struct {
 }
 
 type ContainerService struct {
-	ContainerIP string `db:"ipcontainer"`
+	ContainerIP string
 }
 
 type ContainerData struct {
-	ContainerIP string `db:"containerip" json:"ipcontainer"`
+	ContainerIP string `db:"ipcontainer" json:"ipcontainer"`
 	ContainerID string `db:"containerid" json:"containerid"`
 }

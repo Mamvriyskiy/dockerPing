@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS container (
 CREATE TABLE IF NOT EXISTS historycontainer (
     historyID UUID,
     containerID UUID,
-   	timeping TIMESTAMPTZ, 
+   	timeping TIMESTAMP, 
    	statusping varchar(255)
 );
 

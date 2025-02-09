@@ -27,3 +27,31 @@ func (h *Handler) addContainersStatus(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{})
 }
+
+func (h *Handler) getContainersStatus(c *gin.Context) {
+	id, ok := c.Get("clientID")
+	if !ok {
+		logger.Log("Warning", "Get clientID from context failed", nil)
+		return
+	}
+
+	clientID, ok := id.(string)
+	if !ok {
+		logger.Log("Error", "Error converting value to string", nil, fmt.Sprintf("id = %s", id))
+
+		return
+	}
+
+	containersData, err := h.services.GetContainersStatus(clientID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Error retrieving list of container status",
+		})
+		return
+	}
+
+	fmt.Println(containersData)
+	
+	c.JSON(http.StatusOK, containersData)
+}
+

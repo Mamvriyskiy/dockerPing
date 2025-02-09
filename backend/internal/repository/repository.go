@@ -15,7 +15,8 @@ type ContainerPostgresReposipory interface {
 	GetContainers() ([]models.ContainerData, error)
 }
 type HistoryPostgresRepository interface {
-	AddContainersStatus(container []models.HistoryService) error
+	AddContainersStatus(container []models.HistoryService) (error)
+	GetContainersStatus(clientID string) ([]models.HistoryData, error) 
 }
 
 type Repository struct {

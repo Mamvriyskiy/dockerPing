@@ -27,3 +27,29 @@ func (c *HistoryPostgres) AddContainersStatus(containers []models.HistoryService
 
 	return nil
 }
+
+func (c *HistoryPostgres) GetContainersStatus(clientID string) ([]models.HistoryData, error) {
+	var containersStatus []models.HistoryData
+	querisGetHistory := `
+		SELECT h.containerid, h.timeping, h.statusping, c.ipcontainer
+			FROM historycontainer h
+			JOIN container c ON h.containerid = c.containerid
+			WHERE h.containerid IN (
+				SELECT containerid
+				FROM clientcontainer
+				WHERE clientid = $1
+			)
+			AND h.timeping = (
+				SELECT MAX(timeping)
+				FROM historycontainer
+				WHERE containerid = h.containerid
+		);`
+
+	err := c.db.Select(&containersStatus, querisGetHistory, clientID)
+	if err != nil {
+		logger.Log("Error", "Error selecting list of devices", err)
+		return []models.HistoryData{}, err
+	}
+
+	return containersStatus, nil
+}

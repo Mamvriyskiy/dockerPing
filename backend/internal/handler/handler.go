@@ -50,7 +50,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		if tokenString == pingerToken {
-			logger.Log("Info", "Using pinger token for authentication", nil)
+			logger.Log("Info", "Using pinger token for authentication", nil, fmt.Sprintf("tokenPinger = %s", pingerToken))
 			c.Next()
 		} else {
 			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -113,6 +113,7 @@ func (h *Handler) InitRouters() *gin.Engine {
 	api.GET("/ping", h.getContainers)
 
 	api.POST("/pinger", h.addContainersStatus)
+	api.GET("/pinger", h.getContainersStatus)
 
 	return router
 }

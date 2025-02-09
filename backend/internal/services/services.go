@@ -16,7 +16,8 @@ type IContainerService interface {
 }
 
 type IHistoryService interface {
-	AddContainersStatus(containers []models.HistoryHandler) error
+	AddContainersStatus(containers []models.HistoryHandler) (error)
+	GetContainersStatus(clientID string) ([]models.HistoryData, error) 
 }
 
 type Services struct {
