@@ -64,22 +64,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
-  }
+    width: 200px;
+}
   
-  .form div {
+.form div {
     margin-bottom: 10px;
-  }
+}
   
-  .form input {
+.form input {
     padding: 10px;
     font-size: 14px;
     width: 100%;
     margin-top: 5px;
-  }
+    margin-left: 10px;
+}
   
-  .form button {
+.form label {
+    margin-left: 15px;
+}
+
+.form button {
     padding: 10px;
+    margin-left: 40px;
     font-size: 14px;
     cursor: pointer;
-  }
+}

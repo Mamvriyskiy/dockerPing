@@ -28,9 +28,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-// <div className="centered-container">
-//       <h1>
-//         Welcome! Please <Link to="/login">Login</Link> or <Link to="/register">Register</Link>
-//       </h1>
-//     </div>

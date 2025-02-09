@@ -6,8 +6,8 @@ services:
     container_name: postgres_db
     ports:
       - 5432:5432
-    # volumes:
-    #   - ../migrations:/docker-entrypoint-initdb.d
+    volumes:
+      - ../database:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U Misfio32"]
       interval: 10s
@@ -29,7 +29,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - pinger
+      postgres:
+        condition: service_healthy
     networks:
       - mynetwork
 
@@ -37,6 +38,8 @@ services:
     build:
       context: ..
       dockerfile: ./build/Dockerfile.pinger
+    depends_on:
+      - backend
     ports:
       - "8001:8001"
     networks:
@@ -48,8 +51,8 @@ services:
       dockerfile: ./build/Dockerfile.web
     ports:
       - "3000:3000"
-    environment:
-      - REACT_APP_API_URL=http://backend:8000
+    depends_on:
+      - pinger
     networks:
       - mynetwork
 

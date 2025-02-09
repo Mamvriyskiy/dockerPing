@@ -3,6 +3,7 @@ FROM golang:1.23.2-alpine AS build
 WORKDIR /app
 
 COPY ../go.mod ../go.sum ./
+
 RUN go mod download
 
 COPY ../pinger ./pinger
@@ -10,18 +11,10 @@ COPY ../logger ./logger
 
 RUN go build -o pinger ./pinger/pinger.go
 
-# FROM alpine:latest
-FROM golang:1.23.2-alpine
+FROM alpine:latest
 
 WORKDIR /app
 
-COPY ../pinger ./pinger
-COPY ../logger ./logger
+COPY --from=build /app/pinger .
 
-# COPY --from=build /app/pinger .
-
-EXPOSE 8001
-
-# CMD ["./pinger"]
-CMD ["go", "run", "./pinger/pinger.go"]
-
+CMD ["./pinger"]

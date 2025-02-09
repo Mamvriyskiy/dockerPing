@@ -10,18 +10,10 @@ COPY ../logger ./logger
 
 RUN go build -o backend ./backend/cmd/app/backend.go
 
-# FROM alpine:latest
 FROM golang:1.23.2-alpine
 
 WORKDIR /app
 
-COPY ../backend ./backend
-COPY ../logger ./logger
+COPY --from=build /app/backend .
 
-# COPY --from=build /app/backend .
-
-EXPOSE 8000
-
-# CMD ["./backend"]
-CMD ["go", "run", "./backend/cmd/app/backend.go"]
-
+CMD ["./backend"]
