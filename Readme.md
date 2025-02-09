@@ -21,3 +21,43 @@ Go, Gin, PostgreSQL, TypeScript, React, Docker, HTML, CSS, JWT, git
 
 ### Запуск приложения
 
+
+
+### Пример работы 
+
+Домашняя страница, где предложено зарегистрироваться или войти в существующий аккаунт.
+![Home](docs/home.png)
+
+Регистрация по почте, логину и паролю.
+![SignUp](docs/signup.png)
+
+Вход в аккаунт по почте и паролю.
+![SignIn](docs/signin.png)
+
+### Схема Базы данных
+![DB](docs/tableDB.png)
+
+
+Клонирование репозитория
+```
+git clone https://github.com/Mamvriyskiy/dockerPing.git 
+cd dockerPing
+```
+
+Конфигурация Backend
+```
+cd backend/configs
+touch .env #DB_PASSWORD=Smena 
+cd ../../
+```
+Инициализация Go Modules
+```
+go mod init github.com/Mamvriyskiy/dockerPing
+go mod tidy
+```
+
+Сборка и запуск приложения
+```
+cd build
+docker-compose up --build
+```
