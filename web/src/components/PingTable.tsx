@@ -20,7 +20,7 @@ const PingTable: React.FC = () => {
 
     console.log("==", token)
     try {
-      const response = await axios.get('http://localhost:8000/api/pinger', {
+      const response = await axios.get('http://backend:8000/api/pinger', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token
@@ -115,7 +115,7 @@ const PingForm: React.FC = () => {
     try {
       const data = { ipcontainer };
       console.log(token);
-      const response = await axios.post('http://localhost:8000/api/ping', data, {
+      const response = await axios.post('http://backend:8000/api/ping', data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token

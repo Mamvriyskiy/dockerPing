@@ -15,7 +15,7 @@ const SignUpPage: React.FC = () => {
     const userData = { login, email, password };
 
     try {
-      const response = await fetch('http://localhost:8000/auth/sign-up', {
+      const response = await fetch('http://backend:8000/auth/sign-up', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
@@ -23,7 +23,7 @@ const SignUpPage: React.FC = () => {
 
       if (!response.ok) throw new Error('Ошибка регистрации');
 
-      navigate('/sign-in'); // Переход на страницу входа после успешной регистрации
+      navigate('/sign-in');
     } catch (err) {
       setError(err.message);
     }

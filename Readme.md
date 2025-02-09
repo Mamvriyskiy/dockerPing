@@ -10,18 +10,14 @@
 
 ### Технологический стек
 
+Go, Gin, PostgreSQL, TypeScript, React, Docker, HTML, CSS, JWT, git
 
 ### Используемые сервисы
 
-│── /frontend-api       # Node.js + Express + React
-│   │── /src
-│   │   │── index.ts    # Сервер API (Express)
-│   │   │── routes.ts   # Маршруты API
-│   │   │── config.ts   # Конфигурация (URL backend)
-│   │   │── /client     # React-приложение
-│   │   │   │── /components
-│   │   │   │   │── PingTable.tsx  # Компонент таблицы пингов
-│   │   │   │── App.tsx            # Главный React-компонент
-│   │   │   │── api.ts             # Запросы к API
-│   │── package.json    # Зависимости Node.js и React
-│   │── tsconfig.json 
+1) Backend-сервис обеспечивает RESTful API для запроса данных из DB и добавление туда новых данных.
+2) Frontend-сервис предоставляет пользовательский интерфейс. Берет данные через API BAckend и отображает данные по всем IP адресам в виде таблицы.
+3) База данных PostgreSQL.
+4) Сервис Pinger. Получает список всех dcoker-контейнеров, пингует их и отправляет данные в базу через API Backend.
+
+### Запуск приложения
+

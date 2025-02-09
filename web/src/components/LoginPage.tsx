@@ -14,7 +14,7 @@ const LoginPage: React.FC = () => {
     const credentials = { email, password };
 
     try {
-      const response = await fetch('http://localhost:8000/auth/sign-in', {
+      const response = await fetch('http://backend:8000/auth/sign-in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
