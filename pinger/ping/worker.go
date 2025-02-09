@@ -1,5 +1,0 @@
-package ping
-
-import (
-
-)

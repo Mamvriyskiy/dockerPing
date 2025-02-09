@@ -13,3 +13,15 @@
 
 ### Используемые сервисы
 
+│── /frontend-api       # Node.js + Express + React
+│   │── /src
+│   │   │── index.ts    # Сервер API (Express)
+│   │   │── routes.ts   # Маршруты API
+│   │   │── config.ts   # Конфигурация (URL backend)
+│   │   │── /client     # React-приложение
+│   │   │   │── /components
+│   │   │   │   │── PingTable.tsx  # Компонент таблицы пингов
+│   │   │   │── App.tsx            # Главный React-компонент
+│   │   │   │── api.ts             # Запросы к API
+│   │── package.json    # Зависимости Node.js и React
+│   │── tsconfig.json 

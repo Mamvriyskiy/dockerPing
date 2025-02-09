@@ -1,18 +1,14 @@
 package models
 
-type Container struct {
-	ContainerID string `db:"containerid"`
-	ContainerIP string `db:"ipcontainer" json:"ipcontainer"`
-}
-
 type ContainerHandler struct {
-	Container
+	ContainerIP string `json:"ipcontainer"`
 }
 
 type ContainerService struct {
-	Container
+	ContainerIP string `db:"ipcontainer"`
 }
 
 type ContainerData struct {
-	Container
+	ContainerIP string `db:"containerip" json:"ipcontainer"`
+	ContainerID string `db:"containerid" json:"containerid"`
 }

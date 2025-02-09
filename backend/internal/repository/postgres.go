@@ -24,15 +24,14 @@ func NewPostgresDB(cfg *Config) (*sqlx.DB, error) {
 		"host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.Username, cfg.DBName, cfg.Password, cfg.SSLMode))
 	if err != nil {
-		logger.Log("Error", " sqlx.Open", "Error connect DB:", err, "postgres", fmt.Sprintf(
-			"host=%s port=%s user=%s dbname=%s password='' sslmode=%s",
-			cfg.Host, cfg.Port, cfg.Username, cfg.DBName, cfg.SSLMode))
+		logger.Log("Error", "Failed to connect to the database", err,
+			fmt.Sprintf("DB_HOST = %s, DB_NAME = %s", cfg.Host, cfg.DBName))
 		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		logger.Log("Error", "Ping()", "Error check connection:", err, "")
+		logger.Log("Error", "Error checking database connection", err)
 		return nil, err
 	}
 

@@ -3,6 +3,7 @@ package services
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
 	"github.com/Mamvriyskiy/dockerPing/backend/internal/repository"
 	"github.com/Mamvriyskiy/dockerPing/logger"
@@ -32,7 +33,8 @@ func generatePasswordHash(password string) string {
 
 func (s *ClientService) AddClient(client models.ClientHandler) (models.ClientData, error) {
 	clientServ := models.ClientService{
-		Client:   client.Client,
+		Email:   client.Email,
+		Login:   client.Login,
 		Password: generatePasswordHash(client.Password),
 	}
 
@@ -60,13 +62,9 @@ func generateMarker() (string, error) {
 }
 
 func (s *ClientService) GenerateToken(client models.ClientHandler) (models.ClientData, string, error) {
-	// clientService := models.ClientService{
-	// 	Client: client.Client,
-	// }
-
 	clientData, err := s.repo.GetClient(client.Email)
 	if err != nil {
-		logger.Log("Error", "GetClient", "Error get client:", err, client.Email)
+		logger.Log("Error", "Error fetching client with email", err, fmt.Sprintf("email = %s", client.Email))
 		return models.ClientData{}, "", err
 	}
 

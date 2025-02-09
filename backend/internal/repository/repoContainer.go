@@ -1,9 +1,10 @@
 package repository
 
 import (
-	"github.com/jmoiron/sqlx"
-	"github.com/Mamvriyskiy/dockerPing/logger"
+	"fmt"
 	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
+	"github.com/Mamvriyskiy/dockerPing/logger"
+	"github.com/jmoiron/sqlx"
 )
 
 type ContainerPostgres struct {
@@ -19,7 +20,7 @@ func (c *ContainerPostgres) AddContainer(container models.ContainerService, clie
 
 	tx, err := c.db.Begin()
 	if err != nil {
-		logger.Log("Error", "Transaction", "Failed to start transaction:", err)
+		logger.Log("Error", "Error starting transaction", err)
 		return models.ContainerData{}, err
 	}
 
@@ -34,22 +35,24 @@ func (c *ContainerPostgres) AddContainer(container models.ContainerService, clie
 
 	err = rowContainer.Scan(&containerData.ContainerID, &containerData.ContainerIP)
 	if err != nil {
-		logger.Log("Error", "Scan", "Error inserting into container table:", err)
+		logger.Log("Error", "Error inserting data into container table", err, fmt.Sprintf("clientID = %s", clientID))
 		return models.ContainerData{}, err
 	}
 
-	logger.Log("Info", "Scan", "Inserted into container table:", err, containerData.ContainerID)
+	logger.Log("Info", "Data successfully inserted into container table", err, fmt.Sprintf("containerID = %s", containerData.ContainerID))
 
 	queriesClientContainer := "INSERT INTO clientcontainer (containerid, clientid) VALUES ($1, $2);"
 	_, err = tx.Exec(queriesClientContainer, containerData.ContainerID, clientID)
 	if err != nil {
-		logger.Log("Error", "Exec", "Error inserting into clientcontainer table:", err)
+		logger.Log("Error", "Error inserting data into clientcontainer table", err,
+			fmt.Sprintf("clientID = %s, containerID = %s", clientID, containerData.ContainerID))
 		return models.ContainerData{}, err
 	}
-	logger.Log("Info", "Exec", "Successfully inserted into clientcontainer table", err)
+	logger.Log("Info", "Data successfully inserted into clientcontainer table", err,
+		fmt.Sprintf("clientID = %s, containerID = %s", clientID, containerData.ContainerID))
 
 	if err = tx.Commit(); err != nil {
-		logger.Log("Error", "Transaction", "Failed to commit transaction:", err)
+		logger.Log("Error", "Error committing transaction", err)
 		return models.ContainerData{}, err
 	}
 
@@ -58,10 +61,10 @@ func (c *ContainerPostgres) AddContainer(container models.ContainerService, clie
 
 func (c *ContainerPostgres) GetContainers() ([]models.ContainerData, error) {
 	var containersList []models.ContainerData
-	queries := "select ipcontainer from container;"
+	queries := "select ipcontainer, containerid from container;"
 	err := c.db.Select(&containersList, queries)
 	if err != nil {
-		logger.Log("Error", "Select", "Error get list devices:", err)
+		logger.Log("Error", "Error selecting list of devices", err)
 		return []models.ContainerData{}, err
 	}
 

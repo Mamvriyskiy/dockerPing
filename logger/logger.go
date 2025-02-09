@@ -1,4 +1,4 @@
-package logger 
+package logger
 
 import (
 	"go.uber.org/zap"
@@ -14,50 +14,47 @@ var (
 
 func InitLogger() {
 	once.Do(func() {
-		// file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-		// if err != nil {
-		// 	panic(err) 
-		// }
+		// Создаем кастомный конфиг для цветного консольного вывода
+		encoderConfig := zap.NewProductionEncoderConfig()
+		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder  // Цветной вывод уровня
+		encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder // Краткие пути к файлам
 
 		core := zapcore.NewCore(
-			zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
-			// zapcore.AddSync(file),          
-			zapcore.AddSync(os.Stdout),                  
-			zap.InfoLevel,                                            
+			zapcore.NewConsoleEncoder(encoderConfig), // Используем консольный вывод
+			zapcore.AddSync(os.Stdout),
+			zap.InfoLevel, // Уровень логирования
 		)
 
-		Logger = zap.New(core)
+		Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 	})
 }
 
-func Log(level, nameFunc, event string, err error, additionalParams ...interface{}) {
-	InitLogger()
+func Log(level, event string, err error, additionalParams ...interface{}) {
+	if Logger == nil {
+		InitLogger()
+	}
 
-	eventPrefix := "Event: "
+	fields := make([]zapcore.Field, 0, len(additionalParams)+1)
+	for _, param := range additionalParams {
+		fields = append(fields, zap.Any("param", param))
+	}
+
+	fields = append(fields, zap.String("event", event))
 
 	switch level {
+	case "Debug":
+		Logger.Debug(event, fields...)
 	case "Info":
-		Logger.Info(eventPrefix + event)
+		Logger.Info(event, fields...)
+	case "Warning":
+		Logger.Warn(event, fields...)
 	case "Error":
 		if err != nil {
-			Logger.Error(
-				err.Error(),
-				zap.String("event", event),
-				zap.String("func", nameFunc),
-				zap.Any("param", additionalParams),
-			)
-		} else {
-			Logger.Error(
-				eventPrefix+event,
-				zap.String("func", nameFunc),
-				zap.Any("param", additionalParams),
-			)
+			fields = append(fields, zap.Error(err))
 		}
-	case "Warning":
-		Logger.Warn(
-			eventPrefix+event,
-			zap.String("func", nameFunc),
-			zap.Any("param", additionalParams),
-		)
+		Logger.Error(event, fields...)
+	default:
+		fields = append(fields, zap.String("original_event", event), zap.String("log_level", level))
+		Logger.Info("Unknown log level", fields...)
 	}
 }

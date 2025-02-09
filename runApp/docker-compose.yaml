@@ -3,11 +3,11 @@ version: "3.8"
 services:
   postgres:
     image: postgres:16
-    container_name: postgres_db
+    container_name: postgres
     ports:
       - 5432:5432
-    # volumes:
-    #   - ../migrations:/docker-entrypoint-initdb.d
+    volumes:
+      - ../database:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U Misfio32"]
       interval: 10s
@@ -25,7 +25,7 @@ services:
   backend:
     build:
       context: ..
-      dockerfile: ./build/Dockerfile.backend
+      dockerfile: ./runApp/Dockerfile.backend
     ports:
       - "8000:8000"
     depends_on:
@@ -36,7 +36,7 @@ services:
   pinger:
     build:
       context: ..
-      dockerfile: ./build/Dockerfile.pinger
+      dockerfile: ./runApp/Dockerfile.pinger
     ports:
       - "8001:8001"
     networks:
@@ -45,7 +45,7 @@ services:
   web:
     build:
       context: ..
-      dockerfile: ./build/Dockerfile.web
+      dockerfile: ./runApp/Dockerfile.web
     ports:
       - "3000:3000"
     environment:

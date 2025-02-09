@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 	"net/http"
-	// "github.com/Mamvriyskiy/dockerPing/logger"
+	"github.com/Mamvriyskiy/dockerPing/logger"
 	"github.com/Mamvriyskiy/dockerPing/pinger/request"
 	"github.com/Mamvriyskiy/dockerPing/pinger/ping"
 )
@@ -14,19 +14,26 @@ func main() {
 
 	httpServer := RunPinger("8081")
 
-	//добавить время засыпания из конфига, количество воркеров
 	for {
+		logger.Log("Info", fmt.Sprintf("Requesting containers"), nil)
+
 		ipContainers, err := request.RequestContainers()
 		if err != nil {
-			// error log
+			logger.Log("Error", "Error occurred while requesting containers", err)
 			continue
 		}
 
-		ping.PingContainers(ipContainers)
+		logger.Log("Info", "Creating workers for pinging containers", nil)
+		ping.CreateWorkersPingContainer(ipContainers)
 
+		logger.Log("Info", "Sending status of containers", nil)
+		request.SendStatusContainers(ipContainers)
+		
+		logger.Log("Info", "Sleeping for 20 seconds", nil)
 		time.Sleep(20 * time.Second)
 	}
 
+	logger.Log("Info", "HTTP server is starting", nil)
 	httpServer.ListenAndServe()
 }
 

@@ -1,19 +1,19 @@
-package handler 
+package handler
 
 import (
-	// "fmt"
-	"net/http"
-	"github.com/gin-gonic/gin"
-	"github.com/Mamvriyskiy/dockerPing/logger"
+	"fmt"
 	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
-	//"github.com/Mamvriyskiy/dockerPing/backend/internal/services"
+	"github.com/Mamvriyskiy/dockerPing/logger"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func (h *Handler) addClient(c *gin.Context) {
 	var client models.ClientHandler
 
 	if err := c.BindJSON(&client); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
+		logger.Log("Error", "Error binding JSON to struct:", err,
+			fmt.Sprintf("Request Body: %s", c.Request.Body))
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		return
 	}
@@ -21,12 +21,11 @@ func (h *Handler) addClient(c *gin.Context) {
 	clientData, err := h.services.AddClient(client)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"errors": "Ошибка создания клиента",
+			"errors": "Error creating client",
 		})
 		return
 	}
-	
-	// fmt.Println("+")
+
 	c.JSON(http.StatusOK, clientData)
 }
 
@@ -34,7 +33,8 @@ func (h *Handler) signIn(c *gin.Context) {
 	var client models.ClientHandler
 
 	if err := c.BindJSON(&client); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
+		logger.Log("Error", "Error binding JSON to struct:", err,
+			fmt.Sprintf("Request Body: %s", c.Request.Body))
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		return
 	}
@@ -42,15 +42,15 @@ func (h *Handler) signIn(c *gin.Context) {
 	clientData, token, err := h.services.GenerateToken(client)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"errors": "Ошибка создания клиента",
+			"errors": "Error creating client",
 		})
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"Token": token,
-		"Email": clientData.Email,
-		"Login": clientData.Login,
+		"Token":    token,
+		"Email":    clientData.Email,
+		"Login":    clientData.Login,
 		"ClientID": clientData.ClientID,
 	})
 }

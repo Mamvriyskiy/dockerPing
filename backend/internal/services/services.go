@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/Mamvriyskiy/dockerPing/backend/internal/repository"
 	"github.com/Mamvriyskiy/dockerPing/backend/internal/models"
+	"github.com/Mamvriyskiy/dockerPing/backend/internal/repository"
 )
 
 type IClientService interface {
@@ -15,14 +15,20 @@ type IContainerService interface {
 	GetContainers() ([]models.ContainerData, error)
 }
 
+type IHistoryService interface {
+	AddContainersStatus(containers []models.HistoryHandler) error
+}
+
 type Services struct {
 	IClientService
 	IContainerService
+	IHistoryService
 }
 
 func NewServicesPsql(repo *repository.Repository) *Services {
 	return &Services{
-		IClientService: NewClientService(repo.ClientPostgresReposipory),
+		IClientService:    NewClientService(repo.ClientPostgresReposipory),
 		IContainerService: NewContainerService(repo.ContainerPostgresReposipory),
+		IHistoryService:   NewHistoryService(repo.HistoryPostgresRepository),
 	}
 }

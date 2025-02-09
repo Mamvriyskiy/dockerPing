@@ -15,7 +15,7 @@ func NewContainerService(repo repository.ContainerPostgresReposipory) *Container
 
 func (s *ContainerService) AddContainer(container models.ContainerHandler, clientID string) (models.ContainerData, error) {
 	containerService := models.ContainerService{
-		Container: container.Container,
+		ContainerIP: container.ContainerIP,
 	}
 
 	return s.repo.AddContainer(containerService, clientID)

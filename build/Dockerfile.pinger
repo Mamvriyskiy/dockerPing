@@ -10,12 +10,18 @@ COPY ../logger ./logger
 
 RUN go build -o pinger ./pinger/pinger.go
 
-FROM alpine:latest
+# FROM alpine:latest
+FROM golang:1.23.2-alpine
 
 WORKDIR /app
 
-COPY --from=build /app/pinger .
+COPY ../pinger ./pinger
+COPY ../logger ./logger
+
+# COPY --from=build /app/pinger .
 
 EXPOSE 8001
 
-CMD ["./pinger"]
+# CMD ["./pinger"]
+CMD ["go", "run", "./pinger/pinger.go"]
+

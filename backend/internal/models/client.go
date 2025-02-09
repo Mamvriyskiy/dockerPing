@@ -1,21 +1,20 @@
 package models
 
-type Client struct {
-	ClientID string `db:"clientid"`
-	Login    string `db:"login" json:"login`
-	Email string `db:"email" json:"email`
-}
-
 type ClientHandler struct {
-	Client
+	Login    string `json:"login"`
+	Email    string `json:"email`
 	Password string `json:"password"`
 }
 
 type ClientService struct {
-	Client
-	Password string `db:"password" json:"password`
+	Login    string `db:"login"`
+	Email    string `db:"email`
+	Password string `db:"password"`
 }
 
 type ClientData struct {
-	Client
+	ClientID string `db:"clientid" json:"clientid"`
+	Login    string `db:"login" json:"login"`
+	Email    string `db:"email" json:"email"`
+	Password string `db:"password" json:"password"`
 }
