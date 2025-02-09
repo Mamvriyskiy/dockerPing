@@ -1,0 +1,18 @@
+FROM golang:1.23.2-alpine AS build
+
+ENV GO111MODULE=on 
+
+WORKDIR /app
+
+# Сначала копируем только go.mod и go.sum, чтобы использовать кэш Docker
+COPY ../go.mod ./
+COPY ../go.sum ./
+RUN go mod download
+
+# Теперь копируем исходные файлы
+COPY ../backend ./backend
+COPY ../logger ./logger
+
+# Запуск с помощью go run
+# CMD ["go", "run", "./backend/cmd/app/backend.go"]
+CMD cd backend && go run ./cmd/app/backend.go

@@ -1,0 +1,20 @@
+FROM golang:1.23.2-alpine AS build
+
+WORKDIR /app
+
+COPY ../go.mod ../go.sum ./
+
+RUN go mod download
+
+COPY ../pinger ./pinger
+COPY ../logger ./logger
+
+RUN go build -o pinger ./pinger/pinger.go
+
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=build /app/pinger .
+
+CMD ["./pinger"]

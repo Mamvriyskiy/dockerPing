@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ../database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U Misfio32"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_HOST: "postgres_db"
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: "Misfio32"
+      POSTGRES_PASSWORD: "Smena"
+      POSTGRES_DB: "postgres"
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: ..
+      dockerfile: ./runApp/Dockerfile.backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pinger
+    networks:
+      - mynetwork
+
+  pinger:
+    build:
+      context: ..
+      dockerfile: ./runApp/Dockerfile.pinger
+    ports:
+      - "8001:8001"
+    networks:
+      - mynetwork
+  
+  web:
+    build:
+      context: ..
+      dockerfile: ./runApp/Dockerfile.web
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://backend:8000
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
