@@ -34,6 +34,9 @@ Go, Gin, PostgreSQL, TypeScript, React, Docker, HTML, CSS, JWT, git
 Вход в аккаунт по почте и паролю.
 ![SignIn](docs/signin.png)
 
+Таблица состояний контейнеров
+![SignIn](docs/ipcont.png)
+
 ### Схема Базы данных
 ![DB](docs/tableDB.png)
 
@@ -60,4 +63,10 @@ go mod tidy
 ```
 cd build
 docker-compose up --build
+```
+
+### Запуск
+
+```
+http://localhost:3000
 ```

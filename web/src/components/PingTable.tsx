@@ -36,7 +36,7 @@ const PingTable: React.FC = () => {
 
   useEffect(() => {
     fetchPingData();
-    const interval = setInterval(fetchPingData, 10000);
+    const interval = setInterval(fetchPingData, 5000);
     return () => clearInterval(interval);
   }, []);
 
